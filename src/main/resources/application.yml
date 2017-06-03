@@ -1,0 +1,11 @@
+springfox:
+ title: 'FINT Health Adapter'
+ version: '@version@'
+
+fint:
+ adapter:
+  organizations: fint.health
+  sse-endpoint: https://<host>.felleskomponent.no/provider/sse/%s
+  status-endpoint: https://<host>.felleskomponent.no/provider/status
+  response-endpoint: https://<host>.felleskomponent.no/provider/response
+
