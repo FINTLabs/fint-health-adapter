@@ -2,12 +2,10 @@ package no.fint.provider.adapter.event;
 
 import jersey.repackaged.com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.event.model.DefaultActions;
 import no.fint.event.model.Event;
+import no.fint.event.model.HeaderConstants;
 import no.fint.event.model.Status;
 import no.fint.provider.adapter.FintAdapterProps;
-import no.fint.provider.adapter.sse.FintHeaders;
-import no.fint.provider.health.Action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -36,12 +34,7 @@ public class EventStatusService {
      * @return The inbound event.
      */
     public Event verifyEvent(Event event) {
-        if (Action.getActions().contains(event.getAction()) || DefaultActions.getDefaultActions().contains(event.getAction())) {
-            event.setStatus(Status.PROVIDER_ACCEPTED);
-        } else {
-            event.setStatus(Status.PROVIDER_REJECTED);
-        }
-
+        event.setStatus(Status.PROVIDER_ACCEPTED);
         postStatus(event);
         return event;
     }
@@ -53,7 +46,7 @@ public class EventStatusService {
      */
     public void postStatus(Event event) {
         HttpHeaders headers = new HttpHeaders();
-        headers.put(FintHeaders.HEADER_ORG_ID, Lists.newArrayList(event.getOrgId()));
+        headers.put(HeaderConstants.ORG_ID, Lists.newArrayList(event.getOrgId()));
         ResponseEntity<Void> response = restTemplate.exchange(props.getStatusEndpoint(), HttpMethod.POST, new HttpEntity<>(event, headers), Void.class);
         log.info("Provider POST status response: {}", response.getStatusCode());
     }

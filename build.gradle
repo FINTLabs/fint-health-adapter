@@ -23,15 +23,17 @@ apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'jacoco'
 
+
+apply from: 'https://raw.githubusercontent.com/FINTlibs/fint-buildscripts/v1.0.14/version.gradle'
 jar {
-    version = '0.0.1-SNAPSHOT'
-    baseName = 'fint-sse-adapter-skeleton'
+    version = createVersion()
+    baseName = 'fint-health-adapter'
 }
 
 javadoc {
     source = sourceSets.main.allJava
     classpath = configurations.compile
-    options.windowTitle = 'FINT Java SSE Adapter Skeleton'
+    options.windowTitle = 'FINT Health Adapter'
     options.memberLevel = JavadocMemberLevel.PRIVATE
     destinationDir = file('./javadocs/')
 }
