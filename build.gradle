@@ -1,6 +1,7 @@
 buildscript {
+    apply from: 'https://raw.githubusercontent.com/FINTprosjektet/fint-buildscripts/v1.0.14/dependencies.gradle'
     ext {
-        springBootVersion = '1.5.3.RELEASE'
+        springBootVersion = springBootVersion
     }
     repositories {
         jcenter()
@@ -9,6 +10,10 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
+}
+
+plugins {
+    id 'com.github.ben-manes.versions' version '0.15.0'
 }
 
 apply plugin: 'java'
@@ -51,10 +56,10 @@ repositories {
 
 dependencies {
     compile('org.projectlombok:lombok')
-    compile('com.github.springfox.loader:springfox-loader:1.1.1')
+    compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
 
-    compile('no.fint:fint-sse:0.0.5')
-    compile('no.fint:fint-event-model:0.0.23')
+    compile('no.fint:fint-sse:0.0.6')
+    compile('no.fint:fint-event-model:0.0.26')
     compile('no.fint:fint-relation-model:0.0.22')
     compile('no.fint:fint-pwfa-model:0.0.1')
 
@@ -62,9 +67,13 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
 
     testCompile('cglib:cglib-nodep:3.2.5')
-    testCompile('org.spockframework:spock-spring:1.1-groovy-2.4')
-    testCompile('org.spockframework:spock-core:1.1-groovy-2.4')
+    testCompile("org.spockframework:spock-spring:${spockSpringVersion}")
+    testCompile("org.spockframework:spock-core:${spockSpringVersion}")
     testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = gradleVersion
 }
 
 bootRun {
