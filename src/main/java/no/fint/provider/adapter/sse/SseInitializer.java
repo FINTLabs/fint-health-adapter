@@ -15,7 +15,6 @@ import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Handles the client connections to the provider SSE endpoint
@@ -36,15 +35,14 @@ public class SseInitializer {
     @PostConstruct
     public void init() {
         Arrays.asList(props.getOrganizations()).forEach(orgId -> {
-            String sseUrl = String.format(props.getSseEndpoint(), UUID.randomUUID().toString());
-            FintSse fintSse = new FintSse(sseUrl);
+            FintSse fintSse = new FintSse(props.getSseEndpoint());
             FintEventListener fintEventListener = new FintEventListener(eventHandlerService, orgId);
             fintSse.connect(fintEventListener, ImmutableMap.of(FintHeaders.HEADER_ORG_ID, orgId));
             sseClients.add(fintSse);
         });
     }
 
-    @Scheduled(fixedDelay = 5000L)
+    @Scheduled(initialDelay = 20000L, fixedDelay = 5000L)
     public void checkSseConnection() {
         for (FintSse sseClient : sseClients) {
             if (!sseClient.verifyConnection()) {

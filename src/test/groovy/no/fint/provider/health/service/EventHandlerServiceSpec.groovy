@@ -1,6 +1,5 @@
 package no.fint.provider.health.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import no.fint.event.model.Event
 import no.fint.provider.adapter.event.EventResponseService
 import no.fint.provider.adapter.event.EventStatusService
@@ -14,16 +13,15 @@ class EventHandlerServiceSpec extends Specification {
     void setup() {
         eventStatusService = Mock(EventStatusService)
         eventResponseService = Mock(EventResponseService)
-        eventHandlerService = new EventHandlerService(eventStatusService: eventStatusService, eventResponseService: eventResponseService)
+        eventHandlerService = new EventHandlerService(eventResponseService: eventResponseService)
     }
 
     def "Post response on health check"() {
         given:
         def event = new Event('rogfk.no', 'test', 'HEALTH', 'test')
-        def json = new ObjectMapper().writeValueAsString(event)
 
         when:
-        eventHandlerService.handleEvent(json)
+        eventHandlerService.postHealthCheckResponse(event)
 
         then:
         1 * eventResponseService.postResponse(_ as Event)
