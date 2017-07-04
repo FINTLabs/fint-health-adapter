@@ -2,7 +2,13 @@ springfox:
  title: 'FINT Health Adapter'
  version: '@version@'
 
+security:
+ basic:
+  enabled: false
+
 fint:
+ oauth:
+  enabled: false
  adapter:
   organizations: fint.health
   sse-endpoint: https://<host>.felleskomponent.no/provider/sse/%s

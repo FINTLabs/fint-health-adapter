@@ -3,6 +3,7 @@ package no.fint.provider.adapter.sse;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.event.model.DefaultActions;
 import no.fint.event.model.HeaderConstants;
 import no.fint.provider.adapter.FintAdapterProps;
 import no.fint.provider.health.service.EventHandlerService;
@@ -38,7 +39,7 @@ public class SseInitializer {
         Arrays.asList(props.getOrganizations()).forEach(orgId -> {
             FintSse fintSse = new FintSse(props.getSseEndpoint());
             FintEventListener fintEventListener = new FintEventListener(eventHandlerService, orgId);
-            fintSse.connect(fintEventListener, ImmutableMap.of(HeaderConstants.ORG_ID, orgId));
+            fintSse.connect(fintEventListener, ImmutableMap.of(HeaderConstants.ORG_ID, orgId), DefaultActions.HEALTH);
             sseClients.add(fintSse);
         });
     }
