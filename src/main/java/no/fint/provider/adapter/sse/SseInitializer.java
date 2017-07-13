@@ -39,7 +39,7 @@ public class SseInitializer {
         Arrays.asList(props.getOrganizations()).forEach(orgId -> {
             FintSse fintSse = new FintSse(props.getSseEndpoint());
             FintEventListener fintEventListener = new FintEventListener(eventHandlerService, orgId);
-            fintSse.connect(fintEventListener, ImmutableMap.of(HeaderConstants.ORG_ID, orgId), DefaultActions.HEALTH);
+            fintSse.connect(fintEventListener, ImmutableMap.of(HeaderConstants.ORG_ID, orgId));
             sseClients.add(fintSse);
         });
     }
