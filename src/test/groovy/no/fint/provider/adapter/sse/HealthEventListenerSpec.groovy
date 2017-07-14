@@ -27,4 +27,15 @@ class HealthEventListenerSpec extends Specification {
         then:
         1 * eventHandlerService.postHealthCheckResponse(event)
     }
+
+    def "Do not handle event for unknown orgId"() {
+        given:
+        def event = new Event(orgId: 'unknown')
+
+        when:
+        listener.onEvent(event)
+
+        then:
+        0 * eventHandlerService.postHealthCheckResponse(_)
+    }
 }
