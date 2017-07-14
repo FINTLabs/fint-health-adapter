@@ -6,15 +6,15 @@ import no.fint.provider.health.service.EventHandlerService
 import org.glassfish.jersey.media.sse.InboundEvent
 import spock.lang.Specification
 
-class FintEventListenerSpec extends Specification {
-    private FintEventListener fintEventListener
+class HealthEventListenerSpec extends Specification {
+    private HealthEventListener listener
     private EventHandlerService eventHandlerService
     private InboundEvent inboundEvent
 
     void setup() {
         inboundEvent = Mock(InboundEvent)
         eventHandlerService = Mock(EventHandlerService)
-        fintEventListener = new FintEventListener(eventHandlerService, "rogfk.no")
+        listener = new HealthEventListener(eventHandlerService, "rogfk.no")
     }
 
     def "Handle event"() {
@@ -22,7 +22,7 @@ class FintEventListenerSpec extends Specification {
         def event = new Event(corrId: 'c978c986-8d50-496f-8afd-8d27bd68049b', action: DefaultActions.HEALTH.name(), orgId: 'rogfk.no', client: 'client')
 
         when:
-        fintEventListener.onEvent(event)
+        listener.onEvent(event)
 
         then:
         1 * eventHandlerService.postHealthCheckResponse(event)
