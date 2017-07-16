@@ -1,7 +1,6 @@
 package no.fint.provider.adapter.sse;
 
 import lombok.extern.slf4j.Slf4j;
-import no.fint.event.model.DefaultActions;
 import no.fint.event.model.Event;
 import no.fint.provider.health.service.EventHandlerService;
 import no.fint.sse.AbstractEventListener;
@@ -13,18 +12,19 @@ public class HealthEventListener extends AbstractEventListener {
     public HealthEventListener(EventHandlerService eventHandler, String orgId) {
         this.eventHandler = eventHandler;
 
-        addActions(DefaultActions.HEALTH);
         addOrgIds(orgId);
     }
 
     @Override
     public void onEvent(Event event) {
-        log.info("Processing event: {}, for orgId: {}, for client: {}, action: {}",
-                event.getCorrId(),
-                event.getOrgId(),
-                event.getClient(),
-                event.getAction());
+        if (event.isHealthCheck()) {
+            log.info("Processing event: {}, for orgId: {}, for client: {}, action: {}",
+                    event.getCorrId(),
+                    event.getOrgId(),
+                    event.getClient(),
+                    event.getAction());
 
-        eventHandler.postHealthCheckResponse(event);
+            eventHandler.postHealthCheckResponse(event);
+        }
     }
 }
