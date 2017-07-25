@@ -36,7 +36,7 @@ public class SseInitializer {
 
     @PostConstruct
     public void init() {
-        FintSseConfig config = FintSseConfig.builder().orgIds(props.getOrganizations()).build();
+        FintSseConfig config = FintSseConfig.withOrgIds(props.getOrganizations());
         Arrays.asList(props.getOrganizations()).forEach(orgId -> {
             FintSse fintSse = new FintSse(props.getSseEndpoint(), config);
             HealthEventListener healthEventListener = new HealthEventListener(eventHandlerService);
