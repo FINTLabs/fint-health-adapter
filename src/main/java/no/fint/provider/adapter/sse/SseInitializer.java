@@ -7,6 +7,7 @@ import no.fint.event.model.HeaderConstants;
 import no.fint.provider.adapter.FintAdapterProps;
 import no.fint.provider.health.service.EventHandlerService;
 import no.fint.sse.FintSse;
+import no.fint.sse.FintSseConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -35,9 +36,10 @@ public class SseInitializer {
 
     @PostConstruct
     public void init() {
+        FintSseConfig config = FintSseConfig.builder().orgIds(props.getOrganizations()).build();
         Arrays.asList(props.getOrganizations()).forEach(orgId -> {
-            FintSse fintSse = new FintSse(props.getSseEndpoint());
-            HealthEventListener healthEventListener = new HealthEventListener(eventHandlerService, orgId);
+            FintSse fintSse = new FintSse(props.getSseEndpoint(), config);
+            HealthEventListener healthEventListener = new HealthEventListener(eventHandlerService);
             fintSse.connect(healthEventListener, ImmutableMap.of(HeaderConstants.ORG_ID, orgId));
             sseClients.add(fintSse);
         });

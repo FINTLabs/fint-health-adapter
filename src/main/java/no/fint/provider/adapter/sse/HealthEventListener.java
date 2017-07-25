@@ -9,10 +9,8 @@ import no.fint.sse.AbstractEventListener;
 public class HealthEventListener extends AbstractEventListener {
     private EventHandlerService eventHandler;
 
-    public HealthEventListener(EventHandlerService eventHandler, String orgId) {
+    public HealthEventListener(EventHandlerService eventHandler) {
         this.eventHandler = eventHandler;
-
-        addOrgIds(orgId);
     }
 
     @Override

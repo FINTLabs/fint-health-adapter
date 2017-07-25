@@ -14,7 +14,7 @@ class HealthEventListenerSpec extends Specification {
     void setup() {
         inboundEvent = Mock(InboundEvent)
         eventHandlerService = Mock(EventHandlerService)
-        listener = new HealthEventListener(eventHandlerService, 'rogfk.no')
+        listener = new HealthEventListener(eventHandlerService)
     }
 
     def "Handle event"() {
