@@ -6,16 +6,25 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Build artifact') {
             steps {
-                sh './gradlew build'
+                sh './gradlew clean build -x test'
                 archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
             }
         }
-        stage('Deploy') {
+        stage('Test artifact') {
             steps {
-                sh 'ls build/libs/*.jar'
-                echo 'Deploying...'
+                sh './gradlew cleanTest test'
+            }
+        }
+        stage('Build docker image') {
+            steps {
+                sh 'docker build -t dtr.rogfk.no/fint/health-adapter .'
+            }
+        }
+        stage('Push docker image') {
+            steps {
+                sh 'docker push dtr.rogfk.no/fint/health-adapter'
             }
         }
     }
