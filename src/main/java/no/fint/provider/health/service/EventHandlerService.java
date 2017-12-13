@@ -23,4 +23,9 @@ public class EventHandlerService {
         eventResponseService.postResponse(healthCheckEvent);
     }
 
+    public void rejectEvent(Event event) {
+        event.setStatus(Status.ADAPTER_REJECTED);
+        eventResponseService.postResponse(event);
+    }
+
 }

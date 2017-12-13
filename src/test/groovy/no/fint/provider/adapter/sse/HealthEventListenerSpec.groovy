@@ -27,4 +27,16 @@ class HealthEventListenerSpec extends Specification {
         then:
         1 * eventHandlerService.postHealthCheckResponse(event)
     }
+
+    def "Reject non-health event"() {
+        given:
+        def event = new Event(corrId: 'c978c986-8d50-496f-8afd-8d27bd68049b', action: 'MONKEY_EVENT', orgId: 'rogfk.no', client: 'client')
+
+        when:
+        listener.onEvent(event)
+
+        then:
+        1 * eventHandlerService.rejectEvent(event)
+
+    }
 }

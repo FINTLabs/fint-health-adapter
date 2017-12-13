@@ -23,6 +23,9 @@ public class HealthEventListener extends AbstractEventListener {
                     event.getAction());
 
             eventHandler.postHealthCheckResponse(event);
+        } else {
+            log.info("Rejecting event: {}", event);
+            eventHandler.rejectEvent(event);
         }
     }
 }

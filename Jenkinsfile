@@ -1,30 +1,24 @@
-#!/usr/bin/env groovy
 pipeline {
-    agent any
-    triggers {
-        pollSCM('* * * * *')
-    }
-
+    agent none
     stages {
-        stage('Build artifact') {
+        stage('Build') {
+            agent { label 'docker' }
             steps {
-                sh './gradlew clean build -x test'
-                archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
+                script {
+                    props=readProperties file: 'gradle.properties'
+                }
+                sh "docker build -t 'dtr.rogfk.no/fint-beta/health-adapter:${props.version}' ."
             }
         }
-        stage('Test artifact') {
-            steps {
-                sh './gradlew cleanTest test'
+        stage('Publish') {
+            agent { label 'docker' }
+            when {
+                branch 'master'
             }
-        }
-        stage('Build docker image') {
             steps {
-                sh 'docker build -t dtr.rogfk.no/fint/health-adapter .'
-            }
-        }
-        stage('Push docker image') {
-            steps {
-                sh 'docker push dtr.rogfk.no/fint/health-adapter'
+                withDockerRegistry([credentialsId: 'dtr-rogfk-no', url: 'https://dtr.rogfk.no']) {
+                    sh "docker push 'dtr.rogfk.no/fint-beta/health-adapter:${props.version}'"
+                }
             }
         }
     }
