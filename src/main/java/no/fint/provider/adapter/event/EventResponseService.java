@@ -29,4 +29,11 @@ public class EventResponseService {
         ResponseEntity<Void> response = restTemplate.exchange(props.getResponseEndpoint(), HttpMethod.POST, new HttpEntity<>(event, headers), Void.class);
         log.info("Provider POST response: {}", response.getStatusCode());
     }
+
+    public void postStatus(Event event) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.put(HeaderConstants.ORG_ID, Lists.newArrayList(event.getOrgId()));
+        ResponseEntity<Void> response = restTemplate.exchange(props.getStatusEndpoint(), HttpMethod.POST, new HttpEntity<>(event, headers), Void.class);
+        log.info("Provider POST response: {}", response.getStatusCode());
+    }
 }

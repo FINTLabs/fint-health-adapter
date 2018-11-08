@@ -53,13 +53,13 @@ dependencies {
 }
 
 task copyExternalDependencies(type: Copy) {
-    from configurations.compile
+    from configurations.runtime
     into "$buildDir/deps/external"
     exclude '**/fint-*.jar'
 }
 
 task copyFintDependencies(type: Copy) {
-    from configurations.compile
+    from configurations.runtime
     into "$buildDir/deps/fint"
     include '**/fint-*.jar'
 }
@@ -68,20 +68,19 @@ build.dependsOn(copyExternalDependencies)
 build.dependsOn(copyFintDependencies)
 
 jar {
-    baseName = 'fint-health-adapter'
     manifest {
         attributes(
                 "Manifest-Version": "1.0",
                 "Main-Class": "no.fint.Application",
                 "Implementation-Version": "${version}",
-                "Class-Path": configurations.compile.collect { it.getName() }.join(' ')
+                "Class-Path": configurations.runtime.collect { it.getName() }.join(' ')
         )
     }
 }
 
 javadoc {
     source = sourceSets.main.allJava
-    classpath = configurations.compile
+    classpath = configurations.runtime
     options.windowTitle = 'FINT Health Adapter'
     options.memberLevel = JavadocMemberLevel.PRIVATE
     destinationDir = file('./javadocs/')

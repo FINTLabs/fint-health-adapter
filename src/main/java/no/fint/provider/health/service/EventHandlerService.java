@@ -25,7 +25,7 @@ public class EventHandlerService {
 
     public void rejectEvent(Event event) {
         event.setStatus(Status.ADAPTER_REJECTED);
-        eventResponseService.postResponse(event);
+        eventResponseService.postStatus(event);
     }
 
 }
