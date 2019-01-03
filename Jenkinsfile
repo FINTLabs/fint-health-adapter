@@ -12,8 +12,8 @@ pipeline {
             when { branch 'master' }
             steps {
                 withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
-                    sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/health-adapter:latest"
-                    sh "docker push 'dtr.fintlabs.no/beta/health-adapter:latest'"
+                    sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/health-adapter:build.${BUILD_NUMBER}"
+                    sh "docker push dtr.fintlabs.no/beta/health-adapter:build.${BUILD_NUMBER}"
                 }
             }
         }
@@ -21,8 +21,8 @@ pipeline {
             when { changeRequest() }
             steps {
                 withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
-                    sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/health-adapter:${BRANCH_NAME}"
-                    sh "docker push 'dtr.fintlabs.no/beta/health-adapter:${BRANCH_NAME}'"
+                    sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/health-adapter:${BRANCH_NAME}.${BUILD_NUMBER}"
+                    sh "docker push dtr.fintlabs.no/beta/health-adapter:${BRANCH_NAME}.${BUILD_NUMBER}"
                 }
             }
         }
