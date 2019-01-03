@@ -36,14 +36,15 @@ repositories {
 dependencies {
     compile("org.projectlombok:lombok:${lombokVersion}")
     compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
-
-    compile('no.fint:fint-sse:1.2.1-rc-1')
     compile('org.glassfish.jersey.core:jersey-client:2.27')
     compile('org.glassfish.jersey.core:jersey-common:2.27')
+
+    compile('no.fint:fint-sse:1.2.1-rc-1')
     compile('no.fint:fint-event-model:3.0.0')
     compile('no.fint:fint-relation-model:1.1.5')
+    compile('no.fint:fint-spring-secrets:0.1.0')
 
-    compile('org.springframework.boot:spring-boot-devtools')
+    compile('org.springframework.boot:spring-boot-actuator')
     compile('org.springframework.boot:spring-boot-starter-web')
 
     testCompile("cglib:cglib-nodep:${cglibVersion}")
