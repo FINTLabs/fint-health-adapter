@@ -39,7 +39,7 @@ dependencies {
     compile('org.glassfish.jersey.core:jersey-client:2.27')
     compile('org.glassfish.jersey.core:jersey-common:2.27')
 
-    compile('no.fint:fint-sse:1.4.0-alpha-1')
+    compile('no.fint:fint-sse:1.4.0-alpha-2')
     compile('no.fint:fint-event-model:3.0.0')
     compile('no.fint:fint-relation-model:1.1.5')
     compile('no.fint:fint-spring-secrets:0.1.0')
