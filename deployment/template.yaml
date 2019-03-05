@@ -66,7 +66,7 @@ objects:
                 - name: fint.oauth.enabled
                   value: "$(ENABLE_OAUTH)"
                 - name: fint.oauth.json
-                  value: /etc/fint/health-fintlabs.json
+                  value: file:/etc/fint/health-fintlabs.json
                 - name: springfox.title
                   value: Health Adapter Administrasjon Personal
 parameters:
