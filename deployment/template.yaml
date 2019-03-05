@@ -1,0 +1,88 @@
+kind: Template 
+apiVersion: v1
+metadata:
+  name: health-adapter
+objects:
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: health-adapter-$(SERVICE_NAME)
+      labels:
+        fint.service: health-adapter-$(SERVICE_NAME)
+    spec:
+      replicas: 1
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 0
+          maxSurge: 1
+      selector:
+        matchLabels:
+          fint.service: health-adapter-$(SERVICE_NAME)
+      template:
+        metadata:
+          labels:
+            fint.service: health-adapter-$(SERVICE_NAME)
+        spec:
+          restartPolicy: Always
+          volumes:
+            - name: health-fintlabs
+              secret:
+                secretName: health-fintlabs.json
+          containers:
+            - name: health-adapter-$(SERVICE_NAME)
+              image: fintlabs.azurecr.io/health-adapter:$(VERSION)
+              ports:
+                - containerPort: 8080
+              readinessProbe:
+                initialDelaySeconds: 60
+                timeoutSeconds: 5
+                httpGet:
+                  port: 8080
+                  path: /health
+              resources:
+                limits:
+                  memory: "2Gi"
+                  cpu: "2"
+                requests:
+                  memory: "1Gi"
+                  cpu: "125m"
+              volumeMounts:
+                - name: health-fintlabs
+                  mountPath: /etc/fint
+              env:
+                - name: TZ
+                  value: Europe/Oslo
+                - name: JAVA_TOOL_OPTIONS
+                  value: "-XX:+ExitOnOutOfMemoryError -Xmx1G -verbose:gc"
+                - name: fint.adapter.organizations
+                  value: health.fintlabs.no
+                - name: fint.adapter.response-endpoint
+                  value: $(BASE_URI)/provider/response
+                - name: fint.adapter.sse-endpoint
+                  value: $(BASE_URI)/provider/sse/%s
+                - name: fint.adapter.status-endpoint
+                  value: $(BASE_URI)/provider/status
+                - name: fint.oauth.enabled
+                  value: "$(ENABLE_OAUTH)"
+                - name: fint.oauth.json
+                  value: /etc/fint/health-fintlabs.json
+                - name: springfox.title
+                  value: Health Adapter Administrasjon Personal
+parameters:
+  - name: SERVICE_NAME
+    description: Name of service.
+    required: true
+    parameterType: string
+  - name: BASE_URI
+    description: URI of service
+    required: true
+    parameterType: string
+  - name: ENABLE_OAUTH
+    description: Enable OAuth
+    value: "false"
+    parameterType: string
+  - name: VERSION
+    description: Image version
+    required: false
+    value: "build.2"
