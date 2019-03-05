@@ -42,10 +42,10 @@ objects:
                   path: /health
               resources:
                 limits:
-                  memory: "2Gi"
-                  cpu: "2"
-                requests:
                   memory: "1Gi"
+                  cpu: "1"
+                requests:
+                  memory: "512Mi"
                   cpu: "125m"
               volumeMounts:
                 - name: health-fintlabs
@@ -54,7 +54,7 @@ objects:
                 - name: TZ
                   value: Europe/Oslo
                 - name: JAVA_TOOL_OPTIONS
-                  value: "-XX:+ExitOnOutOfMemoryError -Xmx1G -verbose:gc"
+                  value: "-XX:+ExitOnOutOfMemoryError -Xmx256m -verbose:gc"
                 - name: fint.adapter.organizations
                   value: health.fintlabs.no
                 - name: fint.adapter.response-endpoint
