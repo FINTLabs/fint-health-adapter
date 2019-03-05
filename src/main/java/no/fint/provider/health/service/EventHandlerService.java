@@ -19,7 +19,7 @@ public class EventHandlerService {
     public void postHealthCheckResponse(Event event) {
         Event<Health> healthCheckEvent = new Event<>(event);
         healthCheckEvent.setStatus(Status.TEMP_UPSTREAM_QUEUE);
-        healthCheckEvent.addData(new Health("adapter", HealthStatus.APPLICATION_HEALTHY.name()));
+        healthCheckEvent.addData(new Health("adapter", HealthStatus.APPLICATION_HEALTHY));
         eventResponseService.postResponse(healthCheckEvent);
     }
 
