@@ -24,6 +24,10 @@ objects:
           labels:
             fint.service: health-adapter-$(SERVICE_NAME)
         spec:
+          hostAliases:
+            - ip: "137.117.232.241"
+              hostnames:
+              - api.felleskomponent.no
           restartPolicy: Always
           volumes:
             - name: health-fintlabs
