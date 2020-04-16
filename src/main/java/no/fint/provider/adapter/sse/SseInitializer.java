@@ -51,6 +51,11 @@ public class SseInitializer {
 
     @Scheduled(initialDelay = 20000L, fixedDelay = 5000L)
     public void checkSseConnection() {
+        if (sseClients.isEmpty()) {
+            log.warn("Reinitializing SSE connections!");
+            init();
+            return;
+        }
         try {
             long oldest = sseClients.stream().mapToLong(FintSse::getAge).max().orElse(0);
             if (oldest > 0 && oldest > props.getExpiration()) {
