@@ -24,10 +24,6 @@ objects:
           labels:
             fint.service: health-adapter-$(SERVICE_NAME)
         spec:
-          hostAliases:
-            - ip: "137.117.232.241"
-              hostnames:
-              - api.felleskomponent.no
           restartPolicy: Always
           volumes:
             - name: health-fintlabs
@@ -35,7 +31,7 @@ objects:
                 secretName: health-fintlabs.json
           containers:
             - name: health-adapter-$(SERVICE_NAME)
-              image: fintlabs.azurecr.io/health-adapter:$(VERSION)
+              image: fintlabsacr.azurecr.io/health-adapter:$(VERSION)
               ports:
                 - containerPort: 8080
               readinessProbe:
