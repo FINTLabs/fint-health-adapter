@@ -5,7 +5,7 @@ cat .\template.yaml | docker run -i jimmycuadra/ktmpl - -p SERVICE_NAME felles-k
 cat .\template.yaml | docker run -i jimmycuadra/ktmpl - -p SERVICE_NAME utdanning-vigokodeverk -p BASE_URI ${baseuri}/utdanning/vigo/kodeverk -p VERSION $version -p ENABLE_OAUTH true | kubectl apply -f -
 
 $component = "administrasjon"
-foreach ($stack in "personal", "organisasjon", "kodeverk", "fullmakt") {
+foreach ($stack in "personal", "organisasjon", "kodeverk", "fullmakt", "arkiv") {
     cat .\template.yaml | docker run -i jimmycuadra/ktmpl - -p SERVICE_NAME ${component}-${stack} -p BASE_URI ${baseuri}/${component}/${stack} -p VERSION $version -p ENABLE_OAUTH true | kubectl apply -f -
 }
 

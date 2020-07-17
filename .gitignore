@@ -5,3 +5,7 @@ classes
 schema
 out
 *.iml
+.classpath
+.project
+.settings
+bin
