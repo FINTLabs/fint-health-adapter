@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
+                withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
                     sh "docker build --tag ${GIT_COMMIT} ."
                 }
             }
@@ -11,18 +11,18 @@ pipeline {
         stage('Publish') {
             when { branch 'master' }
             steps {
-                withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
-                    sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/health-adapter:build.${BUILD_NUMBER}"
-                    sh "docker push fintlabs.azurecr.io/health-adapter:build.${BUILD_NUMBER}"
+                withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
+                    sh "docker tag ${GIT_COMMIT} fintlabsacr.azurecr.io/health-adapter:build.${BUILD_NUMBER}"
+                    sh "docker push fintlabsacr.azurecr.io/health-adapter:build.${BUILD_NUMBER}"
                 }
             }
         }
         stage('Publish PR') {
             when { changeRequest() }
             steps {
-                withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
-                    sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/health-adapter:${BRANCH_NAME}.${BUILD_NUMBER}"
-                    sh "docker push fintlabs.azurecr.io/health-adapter:${BRANCH_NAME}.${BUILD_NUMBER}"
+                withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
+                    sh "docker tag ${GIT_COMMIT} fintlabsacr.azurecr.io/health-adapter:${BRANCH_NAME}.${BUILD_NUMBER}"
+                    sh "docker push fintlabsacr.azurecr.io/health-adapter:${BRANCH_NAME}.${BUILD_NUMBER}"
                 }
             }
         }
@@ -34,9 +34,9 @@ pipeline {
                 script {
                     VERSION = TAG_NAME[1..-1]
                 }
-                sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/health-adapter:${VERSION}"
-                withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
-                    sh "docker push fintlabs.azurecr.io/health-adapter:${VERSION}"
+                sh "docker tag ${GIT_COMMIT} fintlabsacr.azurecr.io/health-adapter:${VERSION}"
+                withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
+                    sh "docker push fintlabsacr.azurecr.io/health-adapter:${VERSION}"
                 }
             }
         }
